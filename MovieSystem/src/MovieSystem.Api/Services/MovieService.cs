@@ -25,7 +25,6 @@ public class MovieService : IMovieService
             Genre = movieCreateDto.Genre,
             ReleaseDate = movieCreateDto.ReleaseDate ?? DateTime.UtcNow,
             Rating = movieCreateDto.Rating ?? 0,
-            IsActive = movieCreateDto.IsActive,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -35,9 +34,17 @@ public class MovieService : IMovieService
         return movie.MovieId;
     }
 
-    public Task DeleteAsync(long movieId)
+    public async Task DeleteAsync(long movieId)
     {
-        throw new NotImplementedException();
+        var movie = await _appDbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieId);
+
+        if (movie == null)
+        {
+            throw new Exception("Movie not found");
+        }
+
+        _appDbContext.Movies.Remove(movie);
+        await _appDbContext.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<MovieDto>> GetAllAsync()
@@ -54,19 +61,54 @@ public class MovieService : IMovieService
             Genre = m.Genre,
             ReleaseDate = m.ReleaseDate,
             Rating = m.Rating,
-            IsActive = m.IsActive,
             CreatedAt = m.CreatedAt,
             UpdatedAt = m.UpdatedAt
         });
     }
 
-    public Task<MovieDto> GetByIdAsync(long movieId)
+    public async Task<MovieDto> GetByIdAsync(long movieId)
     {
-        throw new NotImplementedException();
+        var movie = await _appDbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieId);
+
+        if (movie == null)
+        {
+            throw new Exception("Movie not found");
+        }
+
+        return new MovieDto
+        {
+            MovieId = movie.MovieId,
+            Title = movie.Title,
+            Description = movie.Description,
+            DurationMinutes = movie.DurationMinutes,
+            Language = movie.Language,
+            Genre = movie.Genre,
+            ReleaseDate = movie.ReleaseDate,
+            Rating = movie.Rating,
+            CreatedAt = movie.CreatedAt,
+            UpdatedAt = movie.UpdatedAt
+        };
     }
 
-    public Task UpdateAsync(MovieUpdateDto movieUpdateDto)
+    public async Task UpdateAsync(MovieUpdateDto movieUpdateDto)
     {
-        throw new NotImplementedException();
+        var movie = await _appDbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieUpdateDto.MovieId);
+
+        if (movie == null)
+        {
+            throw new Exception("Movie not found");
+        }
+
+        movie.Title = movieUpdateDto.Title;
+        movie.Description = movieUpdateDto.Description;
+        movie.DurationMinutes = movieUpdateDto.DurationMinutes;
+        movie.Language = movieUpdateDto.Language;
+        movie.Genre = movieUpdateDto.Genre;
+        movie.ReleaseDate = movieUpdateDto.ReleaseDate;
+        movie.Rating = movieUpdateDto.Rating;
+        movie.UpdatedAt = DateTime.UtcNow;
+        movie.CreatedAt = movieUpdateDto.CreatedAt;
+
+        await _appDbContext.SaveChangesAsync();
     }
 }

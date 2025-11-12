@@ -3,9 +3,9 @@
 public class SeatDto
 {
     public long SeatId { get; set; }
-    public string SeatNumber { get; set; }
-    public string Row { get; set; }
-    public bool IsVip { get; set; }
+    public int Column { get; set; }
+    public int Row { get; set; }
+    public bool IsAvailable { get; set; }
+    public decimal Price { get; set; }
 
-    public long CinemaHallId { get; set; }
 }

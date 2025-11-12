@@ -16,11 +16,11 @@ public class ShowtimeService : IShowtimeService
     public async Task<long> AddAsync(ShowtimeCreateDto showtimeCreateDto)
     {
         var movieExists = await _appDbContext.Movies.AnyAsync(m => m.MovieId == showtimeCreateDto.MovieId);
-        var cinemaHall = await _appDbContext.CinemaHalls.FirstOrDefaultAsync(ch => ch.CinemaHallId == showtimeCreateDto.CinemaHallId);  
+        var cinemaHallExists = await _appDbContext.CinemaHalls.AnyAsync(ch => ch.CinemaHallId == showtimeCreateDto.CinemaHallId);  
         
-        if (movieExists == false || cinemaHall == null)
+        if (movieExists == false || cinemaHallExists == null)
         {
-            throw new Exception("movie or showtime do not exist");
+            throw new Exception("cinemaHall or movie do not exist");
         }
 
         var showtime = new Showtime
@@ -38,16 +38,21 @@ public class ShowtimeService : IShowtimeService
 
         var seats = new List<Seat>();
 
-        for (int i = 1; i <= cinemaHall.TotalSeats; i++)
+        var decreasePrice = (showtimeCreateDto.MaxPrice - showtimeCreateDto.MinPrice) / showtimeCreateDto.MaxRow;
+
+        for (int i = 1; i <= showtimeCreateDto.MaxRow; i++)
         {
-            seats.Add(new Seat
+            for(int j = 1; j < showtimeCreateDto.MaxColumn; j++)
             {
-                SeatNumber = i,
-                IsAvailable = true,
-                ShowtimeId = showtime.ShowtimeId,
-                CinemaHallId = cinemaHall.CinemaHallId,
-                Row = "A"
-            });
+                seats.Add(new Seat
+                {
+                    Row = i,
+                    Column = j,
+                    IsAvailable = true,
+                    ShowtimeId = showtime.ShowtimeId,
+                    Price = showtimeCreateDto.MaxPrice - (decreasePrice * (i - 1))
+                });
+            }
         }
 
         await _appDbContext.Seats.AddRangeAsync(seats);
@@ -56,9 +61,16 @@ public class ShowtimeService : IShowtimeService
         return showtime.ShowtimeId;
     }
 
-    public Task DeleteAsync(long id)
+    public async Task DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var showtime = await _appDbContext.Showtimes.FirstOrDefaultAsync(s => s.ShowtimeId == id);
+        if(showtime == null)
+        {
+            throw new Exception("Showtime not found");
+        }
+
+        _appDbContext.Showtimes.Remove(showtime);
+        await _appDbContext.SaveChangesAsync();
     }
 
     public async Task<List<ShowtimeDto>> GetAllAsync()
@@ -79,17 +91,64 @@ public class ShowtimeService : IShowtimeService
             MovieId = s.MovieId,
             CinemaHallId = s.CinemaHallId,
             MovieTitle = s.Movie.Title,
-            CinemaHallName = s.CinemaHall.Name
+            CinemaHallName = s.CinemaHall.Name,
+            Seats = null,
         }).ToList();
     }
 
-    public Task<ShowtimeDto> GetByIdAsync(long id)
+    public async Task<ShowtimeDto> GetByIdAsync(long id, bool includeSeats)
     {
-        throw new NotImplementedException();
+        var showtime = await _appDbContext.Showtimes.FirstOrDefaultAsync(s => s.ShowtimeId == id);
+       
+        if (showtime == null)
+        {
+            throw new Exception("Showtime not found");
+        }
+
+        var showTimeDto =  new ShowtimeDto
+        {
+            ShowtimeId = showtime.ShowtimeId,
+            StartTime = showtime.StartTime,
+            EndTime = showtime.EndTime,
+            MinPrice = showtime.MinPrice,
+            MaxPrice = showtime.MaxPrice,
+            MovieId = showtime.MovieId,
+            CinemaHallId = showtime.CinemaHallId,
+        };
+
+        if (includeSeats == true)
+        {
+            await _appDbContext.Entry(showtime).Collection(a => a.Seats).LoadAsync();
+            showTimeDto.Seats = showtime.Seats.Select(seat => new SeatDto
+            {
+                SeatId = seat.SeatId,
+                Row = seat.Row,
+                Column = seat.Column,
+                IsAvailable = seat.IsAvailable,
+                Price = seat.Price
+            }).ToList();
+        }
+
+        return showTimeDto;
     }
 
-    public Task UpdateAsync(ShowtimeUpdateDto showtimeUpdateDto)
+    public async Task UpdateAsync(ShowtimeUpdateDto showtimeUpdateDto)
     {
-        throw new NotImplementedException();
+        var showtime = await _appDbContext.Showtimes.FirstOrDefaultAsync(s => s.ShowtimeId == showtimeUpdateDto.ShowtimeId);
+
+        if (showtime == null)
+        {
+            throw new Exception("Showtime not found");
+        }
+
+        showtime.StartTime = showtimeUpdateDto.StartTime;
+        showtime.EndTime = showtimeUpdateDto.EndTime;
+        showtime.MinPrice = showtimeUpdateDto.MinPrice;
+        showtime.MaxPrice = showtimeUpdateDto.MaxPrice;
+        showtime.CinemaHallId = showtimeUpdateDto.CinemaHallId;
+        showtime.MovieId = showtimeUpdateDto.MovieId;
+        showtime.MaxRow = showtimeUpdateDto.MaxRow;
+        showtime.MaxColumn = showtimeUpdateDto.MaxColumn;
+        await _appDbContext.SaveChangesAsync();
     }
 }

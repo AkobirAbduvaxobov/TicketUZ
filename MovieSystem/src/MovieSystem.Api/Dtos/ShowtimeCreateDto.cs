@@ -10,6 +10,8 @@ public class ShowtimeCreateDto
     public decimal MinPrice { get; set; }
 
     public decimal MaxPrice { get; set; }
+    public decimal MaxRow { get; set; }
+    public decimal MaxColumn { get; set; }
 
     public long MovieId { get; set; }
 

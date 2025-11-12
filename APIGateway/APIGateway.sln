@@ -3,8 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35521.163 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E17C35DE-A188-4411-BD7A-E2675444A050}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIGateway.Api", "src\APIGateway.Api\APIGateway.Api.csproj", "{4747AF17-92B1-43C2-A8CB-FDB67EC2213D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4747AF17-92B1-43C2-A8CB-FDB67EC2213D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4747AF17-92B1-43C2-A8CB-FDB67EC2213D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4747AF17-92B1-43C2-A8CB-FDB67EC2213D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4747AF17-92B1-43C2-A8CB-FDB67EC2213D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4747AF17-92B1-43C2-A8CB-FDB67EC2213D} = {E17C35DE-A188-4411-BD7A-E2675444A050}
 	EndGlobalSection
 EndGlobal

@@ -13,4 +13,5 @@ public class ShowtimeDto
 
     public string MovieTitle { get; set; }
     public string CinemaHallName { get; set; }
+    public List<SeatDto>? Seats { get; set; }  
 }

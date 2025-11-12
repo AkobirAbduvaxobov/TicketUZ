@@ -19,7 +19,6 @@ public class CinemaHallService : ICinemaHallService
         var cinemaHall = new CinemaHall
         {
             Name = cinemaHallCreateDto.Name,
-            TotalSeats = cinemaHallCreateDto.TotalSeats,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -29,9 +28,16 @@ public class CinemaHallService : ICinemaHallService
         return cinemaHall.CinemaHallId;
     }
 
-    public Task DeleteAsync(long id)
+    public async Task DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var cinemaHall = await _appDbContext.CinemaHalls.FirstOrDefaultAsync(ch => ch.CinemaHallId == id);
+        if(cinemaHall == null)
+        {
+            throw new Exception("Cinema hall not found");
+        }
+
+        _appDbContext.CinemaHalls.Remove(cinemaHall);
+        await _appDbContext.SaveChangesAsync();
     }
 
     public async Task<List<CinemaHallDto>> GetAllAsync()
@@ -42,19 +48,40 @@ public class CinemaHallService : ICinemaHallService
         {
             CinemaHallId = ch.CinemaHallId,
             Name = ch.Name,
-            TotalSeats = ch.TotalSeats,
             CreatedAt = ch.CreatedAt,
             UpdatedAt = ch.UpdatedAt
         }).ToList();
     }
 
-    public Task<CinemaHallDto> GetByIdAsync(long id)
+    public async Task<CinemaHallDto> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var cinemaHall = await _appDbContext.CinemaHalls.FirstOrDefaultAsync(ch => ch.CinemaHallId == id);
+        
+        if (cinemaHall == null)
+        {
+            throw new Exception("Cinema hall not found");
+        }
+        return new CinemaHallDto
+        {
+            CinemaHallId = cinemaHall.CinemaHallId,
+            Name = cinemaHall.Name,
+            CreatedAt = cinemaHall.CreatedAt,
+            UpdatedAt = cinemaHall.UpdatedAt
+        };
     }
 
-    public Task UpdateAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
+    public async Task UpdateAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
     {
-        throw new NotImplementedException();
+        CinemaHall? cinemaHall = await _appDbContext.CinemaHalls.FirstOrDefaultAsync(ch => ch.CinemaHallId == cinemaHallUpdateDto.CinemaHallId);
+
+        if (cinemaHall == null)
+        {
+            throw new Exception("Cinema hall not found");
+        }
+
+        cinemaHall.UpdatedAt = DateTime.UtcNow;
+        cinemaHall.Name = cinemaHallUpdateDto.Name;
+
+        await _appDbContext.SaveChangesAsync();
     }
 }

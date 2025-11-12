@@ -15,9 +15,9 @@ public class MovieUpdateDto
 
     public string Genre { get; set; }
 
-    public DateTime? ReleaseDate { get; set; }
+    public DateTime ReleaseDate { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public decimal? Rating { get; set; }
+    public decimal Rating { get; set; }
 
-    public bool IsActive { get; set; } = true;
 }

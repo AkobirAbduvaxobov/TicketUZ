@@ -7,5 +7,4 @@ public class CinemaHallUpdateDto
 
     public string Name { get; set; }
 
-    public int TotalSeats { get; set; }
 }
