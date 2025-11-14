@@ -1,91 +1,100 @@
-﻿using APIGateway.Api.Dtos.MovieDtos;
+using APIGateway.Api.Dtos.MovieDtos;
+using APIGateway.Api.Services;
+using System.Text.Json;
 
-namespace APIGateway.Api.Services;
-
-public class MovieApiService : IMovieApiService
+namespace APIGateway.Api.Services
 {
-    public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
+    public class MovieApiService : IMovieApiService
     {
-        throw new NotImplementedException();
-    }
+        public async Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task UpdateCinemaHallAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task DeleteCinemaHallAsync(long cinemaHallId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task DeleteCinemaHallAsync(long cinemaHallId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<CinemaHallDto> GetCinemaHallByIdAsync(long cinemaHallId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task DeleteMovieAsync(long movieId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task DeleteShowTimeByIdAsync(long showtimeId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task UpdateMovieAsync(MovieUpdateDto movieUpdateDto)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<List<MovieDto>> GetAllMoviesAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<string> GetMovieByIdAsync(long movieId)
+        {
+            var movie = new MovieDto { Id = movieId /* populate other properties if needed */ };
+            return await Task.FromResult(JsonSerializer.Serialize(movie));
+        }
 
-    public Task<CinemaHallDto> GetCinemaHallByIdAsync(long cinemaHallId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<string> GetAllMoviesAsync()
+        {
+            var movies = new List<MovieDto>
+            {
+                new MovieDto { Id = 1 },
+                new MovieDto { Id = 2 }
+            };
+            return await Task.FromResult(JsonSerializer.Serialize(movies));
+        }
 
-    public Task<MovieDto> GetMovieByIdAsync(long movieId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task DeleteMovieAsync(long movieId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<SeatDto> GetSeatByIdAsync(long seatId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<SeatDto> GetSeatByIdAsync(long seatId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<ShowtimeDto> GetShowtimeByIdAsync(long showtimeId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task<List<ShowtimeDto>> GetShowtimesAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task DeleteShowTimeByIdAsync(long showtimeId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task MakeShowtimeAvailableAsync(long showtimeId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<List<ShowtimeDto>> GetShowtimesAsync()
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task UpdateCinemaHallAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<ShowtimeDto> GetShowtimeByIdAsync(long showtimeId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task UpdateMovieAsync(MovieUpdateDto movieUpdateDto)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task MakeShowtimeAvailableAsync(long showtimeId)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
 
-    public Task UpdateShowtimeAsync(ShowtimeUpdateDto showtimeUpdateDto)
-    {
-        throw new NotImplementedException();
+        public async Task UpdateShowtimeAsync(ShowtimeUpdateDto showtimeUpdateDto)
+        {
+            throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
+        }
     }
 }
