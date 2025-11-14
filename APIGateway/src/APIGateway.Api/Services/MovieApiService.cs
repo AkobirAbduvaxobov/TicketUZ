@@ -1,17 +1,46 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
+using MovieSystem.Api.Dtos;
 
 namespace APIGateway.Api.Services;
 
 public class MovieApiService : IMovieApiService
 {
+    private readonly List<CinemaHallDto> _cinemaHalls = new();
+    private readonly List<MovieDto> _movies = new();
+    private long _cinemaHallId = 1;
+    private long _movieId = 1;
+
     public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
-        throw new NotImplementedException();
+        var hall = new CinemaHallDto
+        {
+            CinemaHallId = _cinemaHallId++,
+            Name = cinemaHallCreateDto.Name,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+        _cinemaHalls.Add(hall);
+        return Task.FromResult(hall.CinemaHallId);
     }
 
     public Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
     {
-        throw new NotImplementedException();
+        var movie = new MovieDto
+        {
+            MovieId = _movieId++,
+            Title = movieCreateDto.Title,
+            Description = movieCreateDto.Description,
+            DurationMinutes = movieCreateDto.DurationMinutes,
+            Language = movieCreateDto.Language,
+            Genre = movieCreateDto.Genre,
+            ReleaseDate = movieCreateDto.ReleaseDate ?? DateTime.UtcNow,
+            Rating = movieCreateDto.Rating ?? 0,
+            IsActive = movieCreateDto.IsActive,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+        _movies.Add(movie);
+        return Task.FromResult(movie.MovieId);
     }
 
     public Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
