@@ -113,7 +113,7 @@ public class ShowtimeService : IShowtimeService
             MinPrice = showtime.MinPrice,
             MaxPrice = showtime.MaxPrice,
             MovieId = showtime.MovieId,
-            CinemaHallId = showtime.CinemaHallId,
+            CinemaHallId = showtime.CinemaHallId
         };
 
         if (includeSeats == true)
@@ -150,5 +150,20 @@ public class ShowtimeService : IShowtimeService
         showtime.MaxRow = showtimeUpdateDto.MaxRow;
         showtime.MaxColumn = showtimeUpdateDto.MaxColumn;
         await _appDbContext.SaveChangesAsync();
+    }
+
+    public async Task<ShowtimeAvailableDto> ValidateAsync(long showtimeId, long seatId)
+    {
+        var showtimeExists = await _appDbContext.Showtimes.AnyAsync(s => s.ShowtimeId == showtimeId);
+        var seat = await _appDbContext.Seats.FirstOrDefaultAsync(s => s.SeatId == seatId && s.ShowtimeId == showtimeId);
+
+        var showtimeAvailableDto = new ShowtimeAvailableDto
+        {
+            ShowtimeExists = showtimeExists,
+            SeatExists = seat != null,
+            SeatAvailable = seat != null ? seat.IsAvailable : false
+        };
+
+        return showtimeAvailableDto;
     }
 }

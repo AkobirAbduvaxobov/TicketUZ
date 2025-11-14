@@ -9,4 +9,5 @@ public interface IShowtimeService
     public Task<ShowtimeDto> GetByIdAsync(long id, bool includeSeats);
     public Task<List<ShowtimeDto>> GetAllAsync();
     public Task DeleteAsync(long id);
+    public Task<ShowtimeAvailableDto> ValidateAsync(long showtimeId, long seatId);
 }
