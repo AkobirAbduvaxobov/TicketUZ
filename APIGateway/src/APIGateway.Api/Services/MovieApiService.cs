@@ -19,82 +19,48 @@ namespace APIGateway.Api.Services
 
         public async Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
         {
-            var id = Interlocked.Increment(ref _cinemaHallId);
-            var dto = new CinemaHallDto
-            {
-                Id = id,
-                Name = cinemaHallCreateDto.Name,
-                // add other properties
-            };
-            _cinemaHalls[id] = dto;
-            return await Task.FromResult(id);
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
         }
 
         public async Task UpdateCinemaHallAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
         {
-            if (_cinemaHalls.TryGetValue(cinemaHallUpdateDto.Id, out var hall))
-            {
-                hall.Name = cinemaHallUpdateDto.Name;
-                // update other properties
-            }
-            await Task.CompletedTask;
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
         }
 
         public async Task DeleteCinemaHallAsync(long cinemaHallId)
         {
-            _cinemaHalls.TryRemove(cinemaHallId, out _);
-            await Task.CompletedTask;
-        }
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");        }
 
         public async Task<CinemaHallDto> GetCinemaHallByIdAsync(long cinemaHallId)
         {
-            _cinemaHalls.TryGetValue(cinemaHallId, out var hall);
-            return await Task.FromResult(hall);
-        }
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");        }
 
         public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
         {
-            return await Task.FromResult(_cinemaHalls.Values.ToList());
-        }
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");        }
 
         public async Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
         {
-            var id = Interlocked.Increment(ref _movieId);
-            var dto = new MovieDto
-            {
-                Id = id,
-                Title = movieCreateDto.Title,
-                // add other properties
-            };
-            _movies[id] = dto;
-            return await Task.FromResult(id);
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
         }
 
         public async Task UpdateMovieAsync(MovieUpdateDto movieUpdateDto)
         {
-            if (_movies.TryGetValue(movieUpdateDto.Id, out var movie))
-            {
-                movie.Title = movieUpdateDto.Title;
-                // update other properties
-            }
-            await Task.CompletedTask;
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
         }
 
         public async Task<MovieDto> GetMovieByIdAsync(long movieId)
         {
-            _movies.TryGetValue(movieId, out var movie);
-            return await Task.FromResult(movie);
+        throw new NotImplementedException("wth.");
         }
 
         public async Task<List<MovieDto>> GetAllMoviesAsync()
         {
-            return await Task.FromResult(_movies.Values.ToList());
-        }
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");        }
 
         public async Task DeleteMovieAsync(long movieId)
         {
-            _movies.TryRemove(movieId, out _);
-            await Task.CompletedTask;
+        throw new NotImplementedException("The 'DoSomething' method is not yet implemented.");
         }
 
         public async Task<SeatDto> GetSeatByIdAsync(long seatId)
