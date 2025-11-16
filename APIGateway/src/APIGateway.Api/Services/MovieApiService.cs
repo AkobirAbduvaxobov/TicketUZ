@@ -57,6 +57,7 @@ public class MovieApiService : IMovieApiService
 
     public Task<SeatDto> GetSeatByIdAsync(long seatId)
     {
+        // do it
         throw new NotImplementedException();
     }
 
