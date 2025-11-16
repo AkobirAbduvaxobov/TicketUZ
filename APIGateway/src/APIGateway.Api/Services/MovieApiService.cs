@@ -1,4 +1,5 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace APIGateway.Api.Services;
@@ -102,9 +103,18 @@ public class MovieApiService : IMovieApiService
         return res;
     }
 
-    public Task MakeShowtimeAvailableAsync(long showtimeId)
+    public async  Task MakeShowtimeAvailableAsync(long showtimeId)
     {
-        throw new NotImplementedException();
+        HttpClient httpClient = new HttpClient();
+
+        var response = await httpClient.PostAsync($"your-api-path/showtimes/{showtimeId}/available",null);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Failed to make showtime available: {response.StatusCode}"
+            );
+        }
     }
 
     public Task UpdateCinemaHallAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
