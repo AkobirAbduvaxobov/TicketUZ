@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+﻿using APIGateway.Api.Dtos.MovieDtos;
 using System.Text.Json;
 using APIGateway.Api.Dtos;
 using APIGateway.Api.Dtos.MovieDtos;
