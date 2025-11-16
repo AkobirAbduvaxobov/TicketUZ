@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APIGateway.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/gateway/movies")]
     [ApiController]
     public class MovieGatewayController : ControllerBase
     {
+
     }
 }
