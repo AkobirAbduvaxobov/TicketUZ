@@ -1,6 +1,4 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
-using MovieSystem.Api.Dtos;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace APIGateway.Api.Services;
