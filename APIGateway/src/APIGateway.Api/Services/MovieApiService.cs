@@ -11,12 +11,31 @@ public class MovieApiService : IMovieApiService
 
     public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
-        throw new NotImplementedException();
+        var hall = new CinemaHallCreateDto
+        {
+            Name = cinemaHallCreateDto.Name,
+            TotalSeats = cinemaHallCreateDto.TotalSeats
+        };
+
+        long generatedId = DateTime.Now.Ticks;
+        return Task.FromResult(generatedId);
     }
 
     public Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
     {
-        throw new NotImplementedException();
+        var movie = new MovieCreateDto
+        {
+            Title = movieCreateDto.Title,
+            Description = movieCreateDto.Description,
+            DurationMinutes = movieCreateDto.DurationMinutes,
+            Language = movieCreateDto.Language,
+            Genre = movieCreateDto.Genre,
+            ReleaseDate = movieCreateDto.ReleaseDate,
+            Rating = movieCreateDto.Rating
+        };
+
+        long generatedId = DateTime.Now.Ticks;
+        return Task.FromResult(generatedId);
     }
 
     public Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
