@@ -1,9 +1,17 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
+using MovieSystem.Api.Dtos;
 
 namespace APIGateway.Api.Services;
 
 public class MovieApiService : IMovieApiService
 {
+    private readonly HttpClient _httpClient;
+
+    public MovieApiService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
     public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
         throw new NotImplementedException();
@@ -34,14 +42,16 @@ public class MovieApiService : IMovieApiService
         throw new NotImplementedException();
     }
 
-    public Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
+    public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
     {
-        throw new NotImplementedException();
+        var cinameHall = await _httpClient.GetFromJsonAsync<List<CinemaHallDto>>("cinemahalls");
+        return cinameHall;
     }
 
-    public Task<List<MovieDto>> GetAllMoviesAsync()
+    public async Task<List<MovieDto>> GetAllMoviesAsync()
     {
-        throw new NotImplementedException();
+        var movies = await _httpClient.GetFromJsonAsync<List<MovieDto>>("movies");
+        return movies;
     }
 
     public Task<CinemaHallDto> GetCinemaHallByIdAsync(long cinemaHallId)
