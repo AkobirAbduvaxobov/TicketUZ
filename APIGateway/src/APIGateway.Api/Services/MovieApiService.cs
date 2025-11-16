@@ -1,4 +1,5 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
+using MovieSystem.Api.Dtos;
 
 namespace APIGateway.Api.Services;
 
