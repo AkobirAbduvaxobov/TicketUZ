@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: auth_mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPass123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+  authsystem:
+    build:
+      context: .
+      dockerfile: src/AuthSystem.Api/Dockerfile
+    container_name: auth_api
+    depends_on:
+      - mssql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DatabaseConnection=Data Source=mssql,1433;Initial Catalog=AuthSystemApi;User Id=sa;Password=StrongPass123!;TrustServerCertificate=True;
+    ports:
+      - "5197:80"   # host → container
+    restart: unless-stopped
+
+volumes:
+  mssql_data:

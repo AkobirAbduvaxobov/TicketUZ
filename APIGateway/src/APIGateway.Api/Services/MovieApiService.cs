@@ -1,6 +1,4 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
-using System.Net.Http;
-using System.Text.Json;
 
 namespace APIGateway.Api.Services;
 
@@ -8,31 +6,12 @@ public class MovieApiService : IMovieApiService
 {
     public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
-        var hall = new CinemaHallCreateDto
-        {
-            Name = cinemaHallCreateDto.Name,
-            TotalSeats = cinemaHallCreateDto.TotalSeats
-        };
-
-        long generatedId = DateTime.Now.Ticks;
-        return Task.FromResult(generatedId);
+        throw new NotImplementedException();
     }
 
     public Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
     {
-        var movie = new MovieCreateDto
-        {
-            Title = movieCreateDto.Title,
-            Description = movieCreateDto.Description,
-            DurationMinutes = movieCreateDto.DurationMinutes,
-            Language = movieCreateDto.Language,
-            Genre = movieCreateDto.Genre,
-            ReleaseDate = movieCreateDto.ReleaseDate,
-            Rating = movieCreateDto.Rating
-        };
-
-        long generatedId = DateTime.Now.Ticks;
-        return Task.FromResult(generatedId);
+        throw new NotImplementedException();
     }
 
     public Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
@@ -77,44 +56,22 @@ public class MovieApiService : IMovieApiService
 
     public async Task<SeatDto> GetSeatByIdAsync(long seatId)
     {
-        var httpClient = new HttpClient();
-
-        var response = await httpClient.GetAsync("There is no such endpoint yet");
-        var content = await response.Content.ReadAsStringAsync();
-        return new SeatDto { };
+        throw new NotImplementedException();
     }
 
     public async Task<ShowtimeDto> GetShowtimeByIdAsync(long showtimeId)
     {
-        var httpClient = new HttpClient();
-
-        var response = await httpClient.GetAsync($"the correct path with /{showtimeId}");
-        var content = await response.Content.ReadAsStringAsync();
-        return new ShowtimeDto { };
+        throw new NotImplementedException();
     }
 
     public async Task<List<ShowtimeDto>> GetShowtimesAsync()
     {
-        var httpClient = new HttpClient();
-
-        var response = await httpClient.GetAsync("the correct path with ");
-        var content = await response.Content.ReadAsStringAsync();
-        List<ShowtimeDto> res = new List<ShowtimeDto>();
-        return res;
+        throw new NotImplementedException();
     }
 
-    public async  Task MakeShowtimeAvailableAsync(long showtimeId)
+    public async Task MakeShowtimeAvailableAsync(long showtimeId)
     {
-        HttpClient httpClient = new HttpClient();
-
-        var response = await httpClient.PostAsync($"your-api-path/showtimes/{showtimeId}/available",null);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException(
-                $"Failed to make showtime available: {response.StatusCode}"
-            );
-        }
+        throw new NotImplementedException();
     }
 
     public Task UpdateCinemaHallAsync(CinemaHallUpdateDto cinemaHallUpdateDto)

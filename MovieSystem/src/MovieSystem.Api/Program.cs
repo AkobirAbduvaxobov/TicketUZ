@@ -1,5 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
 using MovieSystem.Api.Configurations;
+using MovieSystem.Api.Persistense;
 
 namespace MovieSystem.Api
 {
@@ -22,13 +24,26 @@ namespace MovieSystem.Api
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (true || app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+
+            // Disable HTTPS redirection in Docker
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
+
+            // Auto migrate DB
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                db.Database.Migrate();
+            }
+
 
             app.UseAuthorization();
 

@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: movie_mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPass123!
+    ports:
+      - "1434:1433"   # map host 1434 → container 1433
+    volumes:
+      - movie_mssql_data:/var/opt/mssql
+
+  moviesystem:
+    build:
+      context: .
+      dockerfile: src/MovieSystem.Api/Dockerfile
+    container_name: movie_api
+    depends_on:
+      - mssql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DatabaseConnection=Data Source=mssql,1433;Initial Catalog=MovieSystemApi;User Id=sa;Password=StrongPass123!;TrustServerCertificate=True;
+    ports:
+      - "5234:80"  # host port → container port
+    restart: unless-stopped
+
+volumes:
+  movie_mssql_data:
