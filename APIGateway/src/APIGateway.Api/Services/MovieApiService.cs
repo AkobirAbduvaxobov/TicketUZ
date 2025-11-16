@@ -74,14 +74,22 @@ public class MovieApiService : IMovieApiService
         throw new NotImplementedException();
     }
 
-    public Task<SeatDto> GetSeatByIdAsync(long seatId)
+    public async Task<SeatDto> GetSeatByIdAsync(long seatId)
     {
-        throw new NotImplementedException();
+        var httpClient = new HttpClient();
+
+        var response = await httpClient.GetAsync("There is no such endpoint yet");
+        var content = await response.Content.ReadAsStringAsync();
+        return new SeatDto { };
     }
 
-    public Task<ShowtimeDto> GetShowtimeByIdAsync(long showtimeId)
+    public async Task<ShowtimeDto> GetShowtimeByIdAsync(long showtimeId)
     {
-        throw new NotImplementedException();
+        var httpClient = new HttpClient();
+
+        var response = await httpClient.GetAsync($"the correct path with /{showtimeId}");
+        var content = await response.Content.ReadAsStringAsync();
+        return new ShowtimeDto { };
     }
 
     public async Task<List<ShowtimeDto>> GetShowtimesAsync()
@@ -102,6 +110,14 @@ public class MovieApiService : IMovieApiService
         });
 
         return showtimes;
+    public async Task<List<ShowtimeDto>> GetShowtimesAsync()
+    {
+        var httpClient = new HttpClient();
+
+        var response = await httpClient.GetAsync("the correct path with ");
+        var content = await response.Content.ReadAsStringAsync();
+        List<ShowtimeDto> res = new List<ShowtimeDto>();
+        return res;
     }
 
     public Task MakeShowtimeAvailableAsync(long showtimeId)
