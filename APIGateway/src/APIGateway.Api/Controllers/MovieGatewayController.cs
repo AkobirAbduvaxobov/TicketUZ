@@ -9,25 +9,6 @@ namespace APIGateway.Api.Controllers
     [ApiController]
     public class MovieGatewayController : ControllerBase
     {
-        private readonly IMovieApiService _movieApiService;
 
-        public MovieGatewayController(IMovieApiService movieApiService)
-        {
-            _movieApiService = movieApiService;
-        }
-
-        [HttpGet("/CinemaHall")]
-        public async Task<List<CinemaHallDto>> GetCinemaHalls()
-        {
-            var cinemaHalls = await _movieApiService.GetAllCinemaHallsAsync();
-            return cinemaHalls;
-        }
-
-        [HttpGet("/Movies")]
-        public async Task<List<MovieDto>> GetMovies()
-        {
-            var movies = await _movieApiService.GetAllMoviesAsync();
-            return movies;
-        }
     }
 }

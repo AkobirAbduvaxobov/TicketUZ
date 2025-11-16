@@ -2,17 +2,12 @@
 using System.Text.Json;
 using APIGateway.Api.Dtos;
 using APIGateway.Api.Dtos.MovieDtos;
+using MovieSystem.Api.Dtos;
 
 namespace APIGateway.Api.Services;
 
 public class MovieApiService : IMovieApiService
 {
-    private readonly HttpClient _httpClient;
-
-    public MovieApiService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
 
     public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
@@ -46,12 +41,16 @@ public class MovieApiService : IMovieApiService
 
     public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
     {
+        var _httpClient = new HttpClient();
+
         var cinameHall = await _httpClient.GetFromJsonAsync<List<CinemaHallDto>>("cinemahalls");
         return cinameHall;
     }
 
     public async Task<List<MovieDto>> GetAllMoviesAsync()
     {
+        var _httpClient = new HttpClient();
+
         var movies = await _httpClient.GetFromJsonAsync<List<MovieDto>>("movies");
         return movies;
     }
