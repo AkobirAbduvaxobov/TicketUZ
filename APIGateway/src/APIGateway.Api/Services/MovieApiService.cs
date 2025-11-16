@@ -44,13 +44,22 @@ public class MovieApiService : IMovieApiService
 
     public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
     {
+<<<<<<< Updated upstream
         var cinameHall = await _httpClient.GetFromJsonAsync<List<CinemaHallDto>>("cinemahalls");
         return cinameHall;
+=======
+        var cinemaHall = await _httpClient.GetFromJsonAsync<List<CinemaHallDto>>("api/cinemahalls");
+        return cinemaHall;
+>>>>>>> Stashed changes
     }
 
     public async Task<List<MovieDto>> GetAllMoviesAsync()
     {
+<<<<<<< Updated upstream
         var movies = await _httpClient.GetFromJsonAsync<List<MovieDto>>("movies");
+=======
+        var movies = _httpClient.GetFromJsonAsync<List<MovieDto>>("api/movies");
+>>>>>>> Stashed changes
         return movies;
     }
 
