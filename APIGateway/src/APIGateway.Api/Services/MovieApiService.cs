@@ -1,5 +1,5 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
-using MovieSystem.Api.Dtos;
+using System.Text.Json;
 
 namespace APIGateway.Api.Services;
 
@@ -73,6 +73,24 @@ public class MovieApiService : IMovieApiService
         return new ShowtimeDto { };
     }
 
+    public async Task<List<ShowtimeDto>> GetShowtimesAsync()
+    {
+        HttpClient httpClient = new HttpClient();
+
+        var response = await httpClient.GetAsync("Here should be Path");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException($"Failed to get shortimes: {response.StatusCode}");
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+        var showtimes = JsonSerializer.Deserialize<List<ShowtimeDto>>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        return showtimes;
     public async Task<List<ShowtimeDto>> GetShowtimesAsync()
     {
         var httpClient = new HttpClient();

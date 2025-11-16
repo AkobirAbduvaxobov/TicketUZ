@@ -1,5 +1,5 @@
 ﻿
-namespace MovieSystem.Api.Dtos;
+namespace APIGateway.Api.Dtos.MovieDtos;
 
 public class ShowtimeCreateDto
 {
