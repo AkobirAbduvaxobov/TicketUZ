@@ -1,9 +1,19 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
+using MovieSystem.Api.Dtos;
+using Newtonsoft.Json;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace APIGateway.Api.Services;
 
 public class MovieApiService : IMovieApiService
 {
+    private readonly HttpClient _httpClient;
+
+    public MovieApiService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
     public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
         throw new NotImplementedException();
@@ -64,14 +74,29 @@ public class MovieApiService : IMovieApiService
         throw new NotImplementedException();
     }
 
-    public Task<List<ShowtimeDto>> GetShowtimesAsync()
+    public async Task<List<ShowtimeDto>> GetShowtimesAsync()
     {
+        //var response = await _httpClient.GetAsync($"api/showtime");
+
+        //if (!response.IsSuccessStatusCode)
+        //{
+        //    throw new HttpRequestException($"Failed to get shortimes: {response.StatusCode}");
+        //}
+
+        //return await response.Content.ReadAsStringAsync();
+
         throw new NotImplementedException();
+
     }
 
-    public Task MakeShowtimeAvailableAsync(long showtimeId)
+    public async Task MakeShowtimeAvailableAsync(long showtimeId)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PutAsync($"api/showtime/{showtimeId}/available", null);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException($"Failed to make shortime available: {response.StatusCode}");
+        }
     }
 
     public Task UpdateCinemaHallAsync(CinemaHallUpdateDto cinemaHallUpdateDto)
