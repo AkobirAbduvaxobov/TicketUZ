@@ -22,7 +22,7 @@ public interface IMovieApiService
 
     Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto);
     Task DeleteShowTimeByIdAsync(long showtimeId);
-    Task<List<ShowtimeDto>> GetShowtimesAsync();
+    Task<List<ShowtimeDto>> GetAllShowtimesAsync();
     Task<ShowtimeDto> GetShowtimeByIdAsync(long showtimeId);
     Task MakeShowtimeAvailableAsync(long showtimeId);
     Task UpdateShowtimeAsync(ShowtimeUpdateDto showtimeUpdateDto);

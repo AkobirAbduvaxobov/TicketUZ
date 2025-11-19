@@ -4,16 +4,16 @@ namespace APIGateway.Api.Services;
 
 public class UserApiService : IUserApiService
 {
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _client;
 
-    public UserApiService(HttpClient httpClient)
+    public UserApiService(IHttpClientFactory factory)
     {
-        _httpClient = httpClient;
+        _client = factory.CreateClient("AuthSystem");
     }
 
     public async Task<LoginResponseDto> LoginUserAsync(LoginDto loginDto)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/auth/login", loginDto);
+        var response = await _client.PostAsJsonAsync("api/auth/login", loginDto);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<LoginResponseDto>()
@@ -22,7 +22,7 @@ public class UserApiService : IUserApiService
 
     public async Task<long> RegisterUserAsync(RegisterDto registerDto)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/auth/register", registerDto);
+        var response = await _client.PostAsJsonAsync("api/auth/register", registerDto);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<long>();

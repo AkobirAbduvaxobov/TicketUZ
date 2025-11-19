@@ -1,23 +1,67 @@
-﻿using APIGateway.Api.Dtos.MovieDtos;
+﻿using APIGateway.Api.Dtos;
+using APIGateway.Api.Dtos.MovieDtos;
 
 namespace APIGateway.Api.Services;
 
 public class MovieApiService : IMovieApiService
 {
+    private readonly HttpClient _client;
 
-    public Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
+    public MovieApiService(IHttpClientFactory factory)
     {
-        throw new NotImplementedException();
+        _client = factory.CreateClient("MovieSystem");
     }
 
-    public Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
+    public async Task<long> AddCinemaHallAsync(CinemaHallCreateDto cinemaHallCreateDto)
     {
-        throw new NotImplementedException();
+        var response = await _client.PostAsJsonAsync("api/cinemahalls", cinemaHallCreateDto);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<long>();
     }
 
-    public Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
+    public async Task<long> AddMovieAsync(MovieCreateDto movieCreateDto)
     {
-        throw new NotImplementedException();
+        var response = await _client.PostAsJsonAsync("api/movies", movieCreateDto);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<long>();
+    }
+
+    public async Task<long> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
+    {
+        var response = await _client.PostAsJsonAsync("api/showtimes", showtimeCreateDto);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<long>();
+    }
+
+    public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
+    {
+        var response = await _client.GetAsync("api/cinemahalls");
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<List<CinemaHallDto>>()
+               ?? new List<CinemaHallDto>();
+    }
+
+
+    public async Task<List<MovieDto>> GetAllMoviesAsync()
+    {
+        var response = await _client.GetAsync("api/movies");
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<List<MovieDto>>()
+               ?? new List<MovieDto>();
+    }
+
+    public async Task<List<ShowtimeDto>> GetAllShowtimesAsync()
+    {
+        var response = await _client.GetAsync("api/showtimes");
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<List<ShowtimeDto>>()
+               ?? new List<ShowtimeDto>();
     }
 
     public Task DeleteCinemaHallAsync(long cinemaHallId)
@@ -35,21 +79,7 @@ public class MovieApiService : IMovieApiService
         throw new NotImplementedException();
     }
 
-    public async Task<List<CinemaHallDto>> GetAllCinemaHallsAsync()
-    {
-        var _httpClient = new HttpClient();
-
-        var cinameHall = await _httpClient.GetFromJsonAsync<List<CinemaHallDto>>("cinemahalls");
-        return cinameHall;
-    }
-
-    public async Task<List<MovieDto>> GetAllMoviesAsync()
-    {
-        var _httpClient = new HttpClient();
-
-        var movies = await _httpClient.GetFromJsonAsync<List<MovieDto>>("movies");
-        return movies;
-    }
+    
 
     public Task<CinemaHallDto> GetCinemaHallByIdAsync(long cinemaHallId)
     {
@@ -71,11 +101,7 @@ public class MovieApiService : IMovieApiService
         throw new NotImplementedException();
     }
 
-    public async Task<List<ShowtimeDto>> GetShowtimesAsync()
-    {
-        throw new NotImplementedException();
-    }
-
+   
     public async Task MakeShowtimeAvailableAsync(long showtimeId)
     {
         throw new NotImplementedException();
