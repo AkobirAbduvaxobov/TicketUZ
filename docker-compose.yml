@@ -46,6 +46,24 @@ services:
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=MovieDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
     ports:
       - "5002:80"
+      
+  # ------------------ BookingSystem ------------------
+  bookingsystem:
+    build:
+      context: ./BookingSystem/src/BookingSystem.Api
+      dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
+      - authsystem
+      - moviesystem
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      Services__AuthSystem: "http://authsystem:80/"
+      Services__MovieSystem: "http://moviesystem:80/"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=BookingDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    ports:
+      - "5003:80"
 
   # ------------------ ApiGateway ------------------
   apigateway:
@@ -55,10 +73,12 @@ services:
     depends_on:
       - authsystem
       - moviesystem
+      - bookingsystem
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       Services__AuthSystem: "http://authsystem:80/"
       Services__MovieSystem: "http://moviesystem:80/"
+      Services__BookingSystem: "http://bookingsystem:80/"
     ports:
       - "7000:80"
 

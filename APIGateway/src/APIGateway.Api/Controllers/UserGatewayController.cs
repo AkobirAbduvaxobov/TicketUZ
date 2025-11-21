@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APIGateway.Api.Controllers;
 
-[Route("api/gateway/users")]
+[Route("api/gateway/authsystem")]
 [ApiController]
 public class UserGatewayController : ControllerBase
 {
@@ -15,14 +15,14 @@ public class UserGatewayController : ControllerBase
         _userApiService = userApiService;
     }
 
-    [HttpPost("register")]
+    [HttpPost("auth/register")]
     public async Task<long> Register([FromBody] RegisterDto registerDto)
     {
         var result = await _userApiService.RegisterUserAsync(registerDto);
         return result;
     }
 
-    [HttpPost("login")]
+    [HttpPost("auth/login")]
     public async Task<LoginResponseDto> Login([FromBody] LoginDto loginDto)
     {
         var result = await _userApiService.LoginUserAsync(loginDto);

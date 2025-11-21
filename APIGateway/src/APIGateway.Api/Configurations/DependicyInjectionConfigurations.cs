@@ -8,6 +8,7 @@ public static class DependicyInjectionConfigurations
     {
         services.AddScoped<IMovieApiService, MovieApiService>();
         services.AddScoped<IUserApiService, UserApiService>();
+        services.AddScoped<IBookingApiService, BookingApiService>();
 
         return services;
     }
