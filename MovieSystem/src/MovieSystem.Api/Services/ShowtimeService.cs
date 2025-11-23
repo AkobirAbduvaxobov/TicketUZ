@@ -152,7 +152,7 @@ public class ShowtimeService : IShowtimeService
         await _appDbContext.SaveChangesAsync();
     }
 
-    public async Task<ShowtimeAvailableDto> ValidateAsync(long showtimeId, long seatId)
+    public async Task<bool> ValidateAsync(long showtimeId, long seatId)
     {
         var showtimeExists = await _appDbContext.Showtimes.AnyAsync(s => s.ShowtimeId == showtimeId);
         var seat = await _appDbContext.Seats.FirstOrDefaultAsync(s => s.SeatId == seatId && s.ShowtimeId == showtimeId);
@@ -164,6 +164,6 @@ public class ShowtimeService : IShowtimeService
             SeatAvailable = seat != null ? seat.IsAvailable : false
         };
 
-        return showtimeAvailableDto;
+        return showtimeAvailableDto.SeatAvailable && showtimeExists && showtimeAvailableDto.SeatAvailable;
     }
 }

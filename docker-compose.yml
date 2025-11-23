@@ -55,15 +55,33 @@ services:
     depends_on:
       - sqlserver
       - authsystem
+      - paymentsystem
       - moviesystem
       - rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       Services__AuthSystem: "http://authsystem:80/"
       Services__MovieSystem: "http://moviesystem:80/"
+      Services__PaymentSystem: "http://paymentsystem:80/"
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=BookingDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      RabbitMQ__Host: "rabbitmq"
     ports:
       - "5003:80"
+
+  # ------------------ PaymentSystem ------------------
+  paymentsystem:
+    build:
+      context: ./PaymentSystem/src/PaymentSystem.Api
+      dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=PaymentDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      RabbitMQ__Host: "rabbitmq"
+    ports:
+      - "5004:80"
 
   # ------------------ ApiGateway ------------------
   apigateway:

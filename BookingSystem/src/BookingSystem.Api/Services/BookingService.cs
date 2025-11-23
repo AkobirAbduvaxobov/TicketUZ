@@ -3,6 +3,7 @@ using BookingSystem.Api.Entities;
 using BookingSystem.Api.Infrastructure;
 using BookingSystem.Api.Persistense;
 using Microsoft.EntityFrameworkCore;
+using PaymentSystem.Api.Dtos;
 
 namespace BookingSystem.Api.Services;
 
@@ -11,12 +12,14 @@ public class BookingService : IBookingService
     private readonly AppDbContext _appDbContext;
     private readonly IAuthApiService _authApiService;
     private readonly IMovieApiService _movieApiService;
+    private readonly IPaymentApiService _paymentApiService;
 
-    public BookingService(AppDbContext appDbContext, IAuthApiService authApiService, IMovieApiService movieApiService)
+    public BookingService(AppDbContext appDbContext, IAuthApiService authApiService, IMovieApiService movieApiService, IPaymentApiService paymentApiService)
     {
         _appDbContext = appDbContext;
         _authApiService = authApiService;
         _movieApiService = movieApiService;
+        _paymentApiService = paymentApiService;
     }
 
     public async Task<long> AddAsync(BookingCreateDto bookingCreateDto)
@@ -47,6 +50,32 @@ public class BookingService : IBookingService
 
         await _appDbContext.Bookings.AddAsync(booking);
         await _appDbContext.SaveChangesAsync();
+
+
+        var paymentResult = await _paymentApiService.ProcessPaymentAsync(new PaymentCreateDto
+        {
+            BookingId = booking.BookingId,
+            UserId = booking.UserId,
+            Amount = booking.TotalPrice
+        });
+
+
+        if (paymentResult.Status == PaymentStatus.Failed)
+        {
+            booking.Status = BookingStatus.Cancelled;
+            //await _seatRepository.ReleaseSeatAsync(booking.SeatId, booking.ShowtimeId);
+            await _appDbContext.SaveChangesAsync();
+
+            throw new Exception("Payment failed.");
+        }
+
+        // 6. Payment success → CONFIRM booking
+        booking.Status = BookingStatus.Confirmed;
+        await _appDbContext.SaveChangesAsync();
+
+        // 7. Publish event to RabbitMQ
+        //await _eventPublisher.PublishBookingConfirmed(booking);
+
 
         return booking.BookingId;
     }
@@ -101,10 +130,5 @@ public class BookingService : IBookingService
         };
 
         return bookingDto;
-    }
-
-    private async Task<bool> ValidateBooking(BookingCreateDto bookingCreateDto)
-    {
-        throw new NotImplementedException();
     }
 }

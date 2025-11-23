@@ -36,7 +36,7 @@ public class ShowtimeController : ControllerBase
     }
 
     [HttpGet("{showtimeId}/seats/{seatId}/validate")]
-    public async Task<ShowtimeAvailableDto> ValidateSeat(long showtimeId, long seatId)
+    public async Task<bool> ValidateSeat(long showtimeId, long seatId)
     {
         var result = await _showtimeService.ValidateAsync(showtimeId, seatId);
         return result;

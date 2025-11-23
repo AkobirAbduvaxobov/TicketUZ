@@ -9,6 +9,7 @@ public static class DependicyInjectionConfigurations
     {
         builder.Services.AddScoped<IMovieApiService, MovieApiService>();
         builder.Services.AddScoped<IAuthApiService, AuthApiService>();
+        builder.Services.AddScoped<IPaymentApiService, PaymentApiService>();
         builder.Services.AddScoped<IBookingService, BookingService>();
     }
 }
