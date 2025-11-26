@@ -12,6 +12,17 @@ public class UserService : IUserService
         _context = context;
     }
 
+    public async Task<string> GetEmailAsync(long userId)
+    {
+        var user = await _context.Users.FindAsync(userId);
+
+        if(user == null)
+        {
+            throw new Exception("User not fount");
+        }
+
+        return user.Email;
+    }
 
     public async Task<bool> UserExistsAsync(long userId)
     {

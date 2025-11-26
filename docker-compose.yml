@@ -28,9 +28,11 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - sqlserver
+      - rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=AuthDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      RabbitMQ__Host: "rabbitmq"
     ports:
       - "5001:80"
 
@@ -82,6 +84,21 @@ services:
       RabbitMQ__Host: "rabbitmq"
     ports:
       - "5004:80"
+      
+    # ------------------ NotificationSystem ------------------
+  notificationsystem:
+    build:
+      context: ./NotificationSystem/src/NotificationSystem.Api
+      dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=NotificationDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      RabbitMQ__Host: "rabbitmq"
+    ports:
+      - "5005:80"
 
   # ------------------ ApiGateway ------------------
   apigateway:

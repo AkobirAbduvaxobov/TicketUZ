@@ -10,11 +10,13 @@ public class AuthService : IAuthService
 {
     private readonly AppDbContext _context;
     private readonly ITokenService _tokenService;
+    private readonly IRabbitMqPublisher _rabbitMqPublisher;
 
-    public AuthService(AppDbContext context, ITokenService tokenService)
+    public AuthService(AppDbContext context, ITokenService tokenService, IRabbitMqPublisher rabbitMqPublisher)
     {
         _context = context;
         _tokenService = tokenService;
+        _rabbitMqPublisher = rabbitMqPublisher;
     }
 
     public async Task<LoginResponseDto> GoogleLoginAsync(GoogleAuthDto dto)
@@ -113,6 +115,8 @@ public class AuthService : IAuthService
             AccessToken = token,
         };
 
+        
+
         return loginResponseDto;
     }
 
@@ -132,6 +136,17 @@ public class AuthService : IAuthService
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
+
+        var notificationCreateDto = new NotificationCreateDto()
+        {
+            UserId = user.UserId,
+            Source = "AuthSystem",
+            Type = "Register",
+            Message = $"Hello {user.FirstName}, you have successfully registered.",
+        };
+
+        await _rabbitMqPublisher.AddAsync(notificationCreateDto);
+
         return user.UserId;
     }
 }

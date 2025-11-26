@@ -20,4 +20,9 @@ public class UsersController : ControllerBase
         return await UserService.UserExistsAsync(userId);
     }
 
+    [HttpGet("email/{userId}")]
+    public async Task<string> GetEmailAsync(long userId)
+    {
+        return await UserService.GetEmailAsync(userId);
+    }
 }
