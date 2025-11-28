@@ -17,7 +17,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.RegisterHttpClientServices(builder.Configuration);
         builder.Services.ConfigureDI();
-        //builder.Services.AddJwtAuthentication(builder.Configuration);
+        builder.Services.AddJwtAuthentication(builder.Configuration);
 
         var app = builder.Build();
 

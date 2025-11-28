@@ -1,5 +1,6 @@
 ﻿using APIGateway.Api.Dtos.MovieDtos;
 using APIGateway.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIGateway.Api.Controllers;
@@ -15,6 +16,7 @@ public class MovieGatewayController : ControllerBase
         _movieApiService = movieApiService;
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("cinemahalls")]
     public async Task<IActionResult> AddCinemaHall(CinemaHallCreateDto cinemaHallCreateDto)
     {
@@ -22,6 +24,7 @@ public class MovieGatewayController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("cinemahalls")]
     public async Task<IActionResult> GetCinemaHalls()
     {
@@ -30,6 +33,7 @@ public class MovieGatewayController : ControllerBase
     }
 
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("movies")]
     public async Task<IActionResult> AddMovie(MovieCreateDto movieCreateDto)
     {
@@ -37,6 +41,7 @@ public class MovieGatewayController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("movies")]
     public async Task<IActionResult> GetMovies()
     {
@@ -45,6 +50,7 @@ public class MovieGatewayController : ControllerBase
     }
 
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("showtimes")]
     public async Task<IActionResult> AddShowtimeAsync(ShowtimeCreateDto showtimeCreateDto)
     {

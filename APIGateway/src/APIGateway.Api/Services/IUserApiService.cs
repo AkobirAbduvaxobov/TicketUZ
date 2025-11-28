@@ -6,4 +6,5 @@ public interface IUserApiService
 {
     Task<long> RegisterUserAsync(RegisterDto registerDto);
     Task<LoginResponseDto> LoginUserAsync(LoginDto login);
+    Task SetRoleAsync(long userId, UserRole role);
 }

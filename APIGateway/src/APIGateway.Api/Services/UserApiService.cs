@@ -27,4 +27,10 @@ public class UserApiService : IUserApiService
 
         return await response.Content.ReadFromJsonAsync<long>();
     }
+
+    public async Task SetRoleAsync(long userId, UserRole role)
+    {
+        var response = await _client.PutAsJsonAsync($"api/users/{userId}/role", role);
+        response.EnsureSuccessStatusCode();
+    }
 }

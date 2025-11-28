@@ -1,4 +1,6 @@
-﻿using AuthSystem.Api.Services;
+﻿using AuthSystem.Api.Dtos;
+using AuthSystem.Api.Entities;
+using AuthSystem.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthSystem.Api.Controllers;
@@ -14,6 +16,12 @@ public class UsersController : ControllerBase
         UserService = userService;
     }
 
+    [HttpPut("{userId}/role")]
+    public async Task SetRoleAsync(long userId, UserRole role)
+    {
+        await UserService.SetRoleAsync(userId, role);
+    }
+
     [HttpGet("exists/{userId}")]
     public async Task<bool> UserExistsAsync(long userId)
     {
@@ -25,4 +33,12 @@ public class UsersController : ControllerBase
     {
         return await UserService.GetEmailAsync(userId);
     }
+
+    [HttpGet]
+    public async Task<List<UserTokenDto>> GetUsersAsync(long userId)
+    {
+        return await UserService.GetAllUsersAsync();
+    }
+
+
 }

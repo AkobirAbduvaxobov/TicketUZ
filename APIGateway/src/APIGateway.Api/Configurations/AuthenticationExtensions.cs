@@ -21,7 +21,7 @@ public static class AuthenticationExtensions
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwt["Issuer"],
                     ValidAudience = jwt["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["SecurityKey"]))
                 };
             });
 

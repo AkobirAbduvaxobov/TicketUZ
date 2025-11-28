@@ -1,8 +1,10 @@
 ﻿using APIGateway.Api.Dtos.BookingDtos;
 using APIGateway.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIGateway.Api.Controllers;
+
 
 [Route("api/gateway/bookingsystem")]
 [ApiController]
@@ -14,6 +16,7 @@ public class BookingGatewayController : ControllerBase
         _bookingApiService = bookingApiService;
     }
 
+    [Authorize(Roles = "User,Admin")]
     [HttpPost("bookings")]
     public async Task<IActionResult> AddBooking(BookingCreateDto bookingCreateDto)
     {
@@ -21,6 +24,7 @@ public class BookingGatewayController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("bookings")]
     public async Task<IActionResult> GetBookings()
     {

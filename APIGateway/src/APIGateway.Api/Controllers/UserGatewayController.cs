@@ -28,4 +28,10 @@ public class UserGatewayController : ControllerBase
         var result = await _userApiService.LoginUserAsync(loginDto);
         return result;
     }
+
+    [HttpPut("{userId}/role")]
+    public async Task SetRoleAsync(long userId, UserRole role)
+    {
+        await _userApiService.SetRoleAsync(userId, role);
+    }
 }
