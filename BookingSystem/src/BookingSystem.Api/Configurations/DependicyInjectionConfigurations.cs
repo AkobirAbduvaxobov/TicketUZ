@@ -11,5 +11,6 @@ public static class DependicyInjectionConfigurations
         builder.Services.AddScoped<IAuthApiService, AuthApiService>();
         builder.Services.AddScoped<IPaymentApiService, PaymentApiService>();
         builder.Services.AddScoped<IBookingService, BookingService>();
+        builder.Services.AddScoped<IRabbitMqPublisher, RabbitMqPublisher>();
     }
 }

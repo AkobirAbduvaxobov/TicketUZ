@@ -13,13 +13,15 @@ public class BookingService : IBookingService
     private readonly IAuthApiService _authApiService;
     private readonly IMovieApiService _movieApiService;
     private readonly IPaymentApiService _paymentApiService;
+    private readonly IRabbitMqPublisher _rabbitMqPublisher;
 
-    public BookingService(AppDbContext appDbContext, IAuthApiService authApiService, IMovieApiService movieApiService, IPaymentApiService paymentApiService)
+    public BookingService(AppDbContext appDbContext, IAuthApiService authApiService, IMovieApiService movieApiService, IPaymentApiService paymentApiService, IRabbitMqPublisher rabbitMqPublisher)
     {
         _appDbContext = appDbContext;
         _authApiService = authApiService;
         _movieApiService = movieApiService;
         _paymentApiService = paymentApiService;
+        _rabbitMqPublisher = rabbitMqPublisher;
     }
 
     public async Task<long> AddAsync(BookingCreateDto bookingCreateDto)
@@ -51,6 +53,15 @@ public class BookingService : IBookingService
         await _appDbContext.Bookings.AddAsync(booking);
         await _appDbContext.SaveChangesAsync();
 
+        var notificationCreateDto = new NotificationCreateDto()
+        {
+            UserId = bookingCreateDto.UserId,
+            Source = "BookingSystem",
+            Type = "Booking",
+            Message = $"Booking is created and pending",
+        };
+
+        await _rabbitMqPublisher.AddAsync(notificationCreateDto);
 
         var paymentResult = await _paymentApiService.ProcessPaymentAsync(new PaymentCreateDto
         {
@@ -66,6 +77,10 @@ public class BookingService : IBookingService
             //await _seatRepository.ReleaseSeatAsync(booking.SeatId, booking.ShowtimeId);
             await _appDbContext.SaveChangesAsync();
 
+            notificationCreateDto.Message = $"Booking is cancelled due to payment failure";
+            await _rabbitMqPublisher.AddAsync(notificationCreateDto);
+
+
             throw new Exception("Payment failed.");
         }
 
@@ -73,6 +88,8 @@ public class BookingService : IBookingService
         booking.Status = BookingStatus.Confirmed;
         await _appDbContext.SaveChangesAsync();
 
+        notificationCreateDto.Message = $"Booking is confirmed";
+        await _rabbitMqPublisher.AddAsync(notificationCreateDto);
         // 7. Publish event to RabbitMQ
         //await _eventPublisher.PublishBookingConfirmed(booking);
 

@@ -56,7 +56,7 @@ public class NotificationListenerService : BackgroundService
                     UserId = data.UserId,
                     Message = data.Message,
                     Type = data.Type,
-                    Source = "UserService",
+                    Source = data.Source,
                     CreatedAt = DateTime.UtcNow,
                     IsRead = false
                 };

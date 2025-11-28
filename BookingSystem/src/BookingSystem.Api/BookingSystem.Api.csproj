@@ -18,6 +18,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+		<PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>

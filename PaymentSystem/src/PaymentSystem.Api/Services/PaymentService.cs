@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using PaymentSystem.Api.Services;
+using PaymentSystem.Api.Dtos;
+using Microsoft.EntityFrameworkCore;
 using PaymentSystem.Api.Dtos;
 using PaymentSystem.Api.Entities;
 using PaymentSystem.Api.Persistense;
@@ -9,10 +11,12 @@ public class PaymentService : IPaymentService
 {
     private readonly AppDbContext _context;
     private readonly Random _random = new();
+    private readonly IRabbitMqPublisher _rabbitMqPublisher;
 
-    public PaymentService(AppDbContext context)
+    public PaymentService(AppDbContext context, IRabbitMqPublisher rabbitMqPublisher)
     {
         _context = context;
+        _rabbitMqPublisher = rabbitMqPublisher;
     }
 
     public async Task<PaymentResultDto> ProcessPaymentAsync(PaymentCreateDto dto)
@@ -30,6 +34,21 @@ public class PaymentService : IPaymentService
 
         await _context.Payments.AddAsync(payment);
         await _context.SaveChangesAsync();
+
+        var notificationCreateDto = new NotificationCreateDto()
+        {
+            UserId = dto.UserId,
+            Source = "PaymentSystem",
+            Type = "ProcessPayment",
+            Message = $"Payment was successfully",
+        };
+
+        if(!isSuccess)
+        {
+            notificationCreateDto.Message = "Payment failed";
+        }
+
+        await _rabbitMqPublisher.AddAsync(notificationCreateDto);
 
         return new PaymentResultDto
         {
