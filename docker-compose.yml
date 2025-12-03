@@ -93,8 +93,10 @@ services:
     depends_on:
       - sqlserver
       - rabbitmq
+      - authsystem
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
+      Services__AuthSystem: "http://authsystem:80/"
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=NotificationDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
       RabbitMQ__Host: "rabbitmq"
     ports:

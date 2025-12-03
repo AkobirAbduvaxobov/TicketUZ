@@ -1,6 +1,6 @@
-﻿namespace NotificationSystem.Api.Services
+﻿namespace NotificationSystem.Api.Services;
+
+public interface IEmailSender
 {
-    public class IEmailSender
-    {
-    }
+    Task SendAsync(string to, string subject, string body);
 }
