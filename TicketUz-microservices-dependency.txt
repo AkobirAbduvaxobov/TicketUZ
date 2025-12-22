@@ -1,0 +1,25 @@
+title Microservices Dependency Diagram
+
+' Client to APIGateway
+Client --> APIGateway : HTTP Request
+
+' APIGateway REST routing
+APIGateway --> AuthSystem : REST
+APIGateway --> BookingSystem : REST
+APIGateway --> MovieSystem : REST
+
+' BookingSystem validations
+BookingSystem --> AuthSystem : REST (User validation)
+BookingSystem --> MovieSystem : REST (Movie validation)
+
+' Asynchronous communication via RabbitMQ
+BookingSystem --> RabbitMQ : Publish BookingCreated event
+RabbitMQ --> PaymentSystem : Consume BookingCreated event
+RabbitMQ --> NotifySystem : Consume BookingCreated event
+
+PaymentSystem --> RabbitMQ : Publish PaymentCompleted event
+RabbitMQ --> NotifySystem : Consume PaymentCompleted event
+
+' Notification user info lookup
+NotifySystem --> AuthSystem : REST (Get user email)
+

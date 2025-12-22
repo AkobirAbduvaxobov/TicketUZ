@@ -1,0 +1,69 @@
+Business Flow Diagram
+
+(For user)
+[Start]
+   |
+[User selects movie]
+   |
+[Send booking request]
+   |
+[API Gateway]
+   |
+[Booking Service]
+   |
+[Validate user from AuthSystem & movie from MovieSystem]
+   |
+[Validation OK?] --- No ---> [Reject]
+   |
+  Yes
+   |
+[Publish Booking Event to RabbitMQ]
+   |
+[Process Payment]
+   |
+[Payment Completed]
+   |
+[Send Notification]
+   |
+[End]
+
+
+(For admin)
+[Start]
+   |
+[Admin do CRUD for movie]
+   |
+[Send CRUD request for movie]
+   |
+[API Gateway]
+   |
+[MovieSystem]
+   |
+[End]
+
+
+[Start]
+   |
+[Admin do CRUD for CinemaHall]
+   |
+[Send CRUD request for cinemaHall]
+   |
+[API Gateway]
+   |
+[MovieSystem]
+   |
+[End]
+
+
+
+[Start]
+   |
+[Admin do CRUD for ShowTime]
+   |
+[Send CRUD request for showTime]
+   |
+[API Gateway]
+   |
+[MovieSystem]
+   |
+[End]

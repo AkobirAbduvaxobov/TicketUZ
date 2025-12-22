@@ -1,0 +1,89 @@
+План выступления 
+* теория
+
+1. What is Microservice Architecture :
+Microservice architecture is an approach where an application is built as a set of small, independent services
+
+Each service:
+Has single responsibility
+Can be developed, deployed, and scaled independently
+Communicates with other services via HTTP or messaging
+
+2. Monolith vs Microservices
+Monolith: one application, one database, one deployment
+Microservices: many services, each with its own database and deployment
+Key difference: independence and scalability
+
+3. Why Microservices (Advanteges & disadvanteges)
+Better scalability
+Faster development by multiple teams
+Single Responsibility
+Technology flexibility
+Loose coupling
+Independency (some services can work while some breake)
+
+Also mention disadvantages:
+More complexity
+Network communication issues
+Harder debugging
+
+4. Communication Between Services
+Synchronous (REST, gRPC)
+Asynchronous (Message Brokers like RabbitMQ, Kafka)
+
+5. When to use Microservice
+Application is large or growing
+Multiple teams work on the same system
+Different parts need different scaling
+High availability is required
+You expect high traffic
+You need independent deployments
+Pet projects for learning it.
+
+Do NOT use Microservices when:
+Small application
+MVP or startup prototype
+Single developer or small team
+Simple CRUD app
+No DevOps experience
+
+
+
+* презентация
+
+
+* заключение
+
+Microservices make big systems flexible — and small systems painful.
+Also It does not make your app better, they make big teams faster.
+
+
+
+
+Почему микросервисы 
+I have many friends who work as Python, Java, .NET, and Go developers.
+When they apply for a new job, almost every interview includes questions about microservice architecture, because a strong understanding of microservices opens the door to big tech companies and is a key step toward becoming a software architect.
+
+
+
+Как разворачивать 
+
+Each microservice is deployed using Docker containers. I build Docker images and run them locally or in a Docker Compose setup. Services communicate via REST or RabbitMQ, and the API Gateway handles incoming requests.
+
+
+
+Как масштабировать 
+
+In my application, each microservice can still be scaled horizontally by running multiple instances of the service manually. Requests can be directed to different instances via API Gateway or manually configured endpoints. Even without a load balancer, scaling is possible by increasing the number of service instances.
+
+
+Как дебажить
+
+Logging => Each service write structured logs.
+Correlation ID => 
+Generated CorrelationID in API Gateway and passed in headers to all services
+API Gateway → Booking → Payment → Notification
+Correlation ID allows tracing one request across all microservices.
+
+
+
