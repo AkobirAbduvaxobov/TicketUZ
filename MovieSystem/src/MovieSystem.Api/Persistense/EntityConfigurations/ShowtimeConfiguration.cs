@@ -10,8 +10,8 @@ public class ShowtimeConfiguration : IEntityTypeConfiguration<Showtime>
     {
         builder.ToTable("Showtimes");
         builder.HasKey(s => s.ShowtimeId);
-        builder.Property(s => s.MinPrice).IsRequired(true);
-        builder.Property(s => s.MaxPrice).IsRequired(true);
+        builder.Property(s => s.MinPrice).HasPrecision(18, 2).IsRequired(true);
+        builder.Property(s => s.MaxPrice).HasPrecision(18, 2).IsRequired(true);
         builder.Property(s => s.MaxRow).IsRequired(true);
         builder.Property(s => s.MaxColumn).IsRequired(true);
         builder.Property(s => s.EndTime).IsRequired(false);

@@ -20,6 +20,11 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # ------------------ AuthSystem ------------------
   authsystem:
@@ -27,11 +32,13 @@ services:
       context: ./AuthSystem/src/AuthSystem.Api
       dockerfile: Dockerfile
     depends_on:
-      - sqlserver
-      - rabbitmq
+      sqlserver:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=AuthDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__DatabaseConnection: "Server=sqlserver;Database=AuthDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
       RabbitMQ__Host: "rabbitmq"
     ports:
       - "5001:80"
@@ -45,7 +52,7 @@ services:
       - sqlserver
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=MovieDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__DatabaseConnection: "Server=sqlserver;Database=MovieDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
     ports:
       - "5002:80"
       
@@ -55,17 +62,22 @@ services:
       context: ./BookingSystem/src/BookingSystem.Api
       dockerfile: Dockerfile
     depends_on:
-      - sqlserver
-      - authsystem
-      - paymentsystem
-      - moviesystem
-      - rabbitmq
+      sqlserver:
+        condition: service_started
+      authsystem:
+        condition: service_started
+      paymentsystem:
+        condition: service_started
+      moviesystem:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       Services__AuthSystem: "http://authsystem:80/"
       Services__MovieSystem: "http://moviesystem:80/"
       Services__PaymentSystem: "http://paymentsystem:80/"
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=BookingDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__DatabaseConnection: "Server=sqlserver;Database=BookingDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
       RabbitMQ__Host: "rabbitmq"
     ports:
       - "5003:80"
@@ -76,11 +88,13 @@ services:
       context: ./PaymentSystem/src/PaymentSystem.Api
       dockerfile: Dockerfile
     depends_on:
-      - sqlserver
-      - rabbitmq
+      sqlserver:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=PaymentDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__DatabaseConnection: "Server=sqlserver;Database=PaymentDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
       RabbitMQ__Host: "rabbitmq"
     ports:
       - "5004:80"
@@ -91,13 +105,16 @@ services:
       context: ./NotificationSystem/src/NotificationSystem.Api
       dockerfile: Dockerfile
     depends_on:
-      - sqlserver
-      - rabbitmq
-      - authsystem
+      sqlserver:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      authsystem:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       Services__AuthSystem: "http://authsystem:80/"
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=NotificationDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__DatabaseConnection: "Server=sqlserver;Database=NotificationDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
       RabbitMQ__Host: "rabbitmq"
     ports:
       - "5005:80"

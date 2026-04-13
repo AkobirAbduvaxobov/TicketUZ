@@ -7,7 +7,7 @@ namespace NotificationSystem.Api.Services;
 public class GmailEmailSender : IEmailSender
 {
     private readonly string _fromEmail = "akobirazizjonugli@gmail.com";
-    private readonly string _appPassword = "parol yours";
+    private readonly string _appPassword = "ohljsyagbdasnzas";
 
     public async Task SendAsync(string to, string subject, string body)
     {

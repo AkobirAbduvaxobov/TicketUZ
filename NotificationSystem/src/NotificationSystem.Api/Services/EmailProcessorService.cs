@@ -23,19 +23,25 @@ public class EmailProcessorService
             .Where(x => !x.IsRead)
             .ToListAsync();
 
+        Console.WriteLine($"📧 EmailProcessor: found {pendingEmails.Count} pending emails");
+
         foreach (var email in pendingEmails)
         {
             try
             {
+                Console.WriteLine($"📧 Fetching email for UserId: {email.UserId}");
                 var receiverEmail = await _authApiService.GetEmailAsync(email.UserId);
+                Console.WriteLine($"📧 Sending to: {receiverEmail}");
                 await _emailSender.SendAsync(receiverEmail, $"{email.Source} : {email.Type}", email.Message);
 
                 email.IsRead = true;
                 await _db.SaveChangesAsync();
+                Console.WriteLine($"✅ Email sent successfully to {receiverEmail}");
             }
             catch (Exception ex)
             {
-                // You can log error here
+                Console.WriteLine($"❌ Email failed: {ex.Message}");
+                Console.WriteLine($"❌ Details: {ex.InnerException?.Message}");
             }
         }
     }

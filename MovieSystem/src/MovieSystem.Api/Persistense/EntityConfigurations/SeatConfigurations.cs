@@ -12,5 +12,6 @@ public class SeatConfigurations : IEntityTypeConfiguration<Seat>
         builder.HasKey(s => s.SeatId);
         builder.Property(s => s.Row).IsRequired(true);
         builder.Property(s => s.Column).IsRequired(true);
+        builder.Property(s => s.Price).HasPrecision(18, 2);
     }
 }

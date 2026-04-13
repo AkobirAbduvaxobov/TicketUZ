@@ -15,7 +15,8 @@ public class AuthApiService : IAuthApiService
         var response = await _client.GetAsync($"api/users/email/{userId}");
         response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadFromJsonAsync<string>();
+        var raw = await response.Content.ReadAsStringAsync();
+        return raw.Trim('"'); // handle both plain text and JSON string responses
     }
 
     public async Task<bool> ValidateUser(long userId)

@@ -37,11 +37,12 @@ namespace MovieSystem.Api
                 app.UseHttpsRedirection();
             }
 
-            // Auto migrate DB
+            // Auto migrate DB + Seed
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 db.Database.Migrate();
+                SeedData.SeedAsync(db).GetAwaiter().GetResult();
             }
 
 

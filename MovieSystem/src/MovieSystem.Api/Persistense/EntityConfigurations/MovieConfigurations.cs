@@ -14,6 +14,7 @@ public class MovieConfigurations : IEntityTypeConfiguration<Movie>
         builder.Property(t => t.Description).IsRequired(true).HasMaxLength(400);
         builder.Property(t => t.Language).IsRequired(true);
         builder.Property(t => t.Genre).IsRequired(true);
+        builder.Property(t => t.Rating).HasPrecision(18, 2);
 
         builder.HasMany(m => m.Showtimes)
                 .WithOne(s => s.Movie)
