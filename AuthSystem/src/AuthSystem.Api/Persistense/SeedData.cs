@@ -18,7 +18,7 @@ public static class SeedData
             UserName = "admin",
             FirstName = "Super",
             LastName = "Admin",
-            Email = "admin@ticketuz.com",
+            Email = "akobirabduvahobov@gmail.com",
             EmailConfirmed = true,
             PasswordHash = hash,
             Salt = salt,
