@@ -38,6 +38,7 @@ namespace AuthSystem.Api
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 db.Database.Migrate();
+                SeedData.SeedAsync(db).GetAwaiter().GetResult();
             }
 
             app.UseAuthorization();
